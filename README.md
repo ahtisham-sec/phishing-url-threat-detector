@@ -9,7 +9,9 @@ number.
 Built to demonstrate: feature engineering from raw text, a scikit-learn
 training pipeline with proper evaluation, an explainable rules engine,
 a CLI tool, a REST API, and report generation.
-<img width="1920" height="2807" alt="image" src="https://github.com/user-attachments/assets/c507914f-22de-4869-bdba-e8e0ac80f9b5" />
+<img width="1920" height="3437" alt="image" src="https://github.com/user-attachments/assets/9ca547b0-dbca-4feb-8615-11205be9638b" />
+
+
 
 
 ## Live demo (no setup beyond installing dependencies)
