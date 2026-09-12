@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Phishing URL Checker</title>
+<style>
+  :root { --bg:#0f1115; --card:#171a21; --border:#262b36; --text:#e6e8ec; --muted:#8b93a3; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:'Segoe UI',Roboto,-apple-system,sans-serif; background:var(--bg); color:var(--text);
+         display:flex; align-items:center; justify-content:center; min-height:100vh; padding:20px; }
+  .box { width: 100%; max-width: 520px; background: var(--card); border:1px solid var(--border); border-radius:14px; padding:28px; }
+  h1 { font-size: 20px; margin: 0 0 6px; }
+  p.sub { color: var(--muted); font-size: 13px; margin: 0 0 20px; }
+  input[type=text] { width:100%; padding:12px 14px; border-radius:8px; border:1px solid var(--border);
+                      background:#0f1115; color:var(--text); font-size:14px; margin-bottom:12px; }
+  button { width:100%; padding:12px; border-radius:8px; border:none; background:#4b8bf4; color:white;
+           font-size:14px; font-weight:600; cursor:pointer; }
+  button:hover { background:#3d78d8; }
+  #result { margin-top: 20px; white-space: pre-wrap; font-size: 13px; color: var(--muted); }
+  .model-status { font-size: 11.5px; color: var(--muted); margin-top: 14px; }
+</style>
+</head>
+<body>
+  <div class="box">
+    <h1>Phishing URL Checker</h1>
+    <p class="sub">Paste a URL to get a risk score, verdict, and the reasoning behind it.</p>
+    <input type="text" id="urlInput" placeholder="https://example.com/login">
+    <button onclick="checkUrl()">Scan URL</button>
+    <div id="result"></div>
+    <div class="model-status">
+      {% if model_loaded %}ML model: loaded{% else %}ML model: not loaded (heuristics only — run train_model.py){% endif %}
+    </div>
+  </div>
+<script>
+async function checkUrl() {
+  const url = document.getElementById('urlInput').value.trim();
+  const resultEl = document.getElementById('result');
+  if (!url) { resultEl.textContent = 'Enter a URL first.'; return; }
+  resultEl.textContent = 'Scanning...';
+  try {
+    const res = await fetch('/check', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({url})
+    });
+    const data = await res.json();
+    resultEl.textContent = JSON.stringify(data, null, 2);
+  } catch (e) {
+    resultEl.textContent = 'Error: ' + e;
+  }
+}
+</script>
+</body>
+</html>
